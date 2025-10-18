@@ -1,6 +1,6 @@
 {
   "env": {
-    "DATABASE_URL": "@database_url",
+    "GORKI_CUSTOMS_DATABASE_URL": "@database_url",
     "NEXTAUTH_SECRET": "@nextauth_secret",
     "DISCORD_CLIENT_ID": "@discord_client_id",
     "DISCORD_CLIENT_SECRET": "@discord_client_secret",
@@ -8,7 +8,7 @@
   },
   "build": {
     "env": {
-      "DATABASE_URL": "@database_url",
+      "GORKI_CUSTOMS_DATABASE_URL": "@database_url",
       "NEXTAUTH_SECRET": "@nextauth_secret",
       "DISCORD_CLIENT_ID": "@discord_client_id",
       "DISCORD_CLIENT_SECRET": "@discord_client_secret",
