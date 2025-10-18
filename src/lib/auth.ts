@@ -4,7 +4,18 @@ import { prisma } from "@/lib/prisma"
 import DiscordProvider from "next-auth/providers/discord"
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  adapter: {
+    ...PrismaAdapter(prisma),
+    async createUser(user) {
+      // Créer l'utilisateur avec le rôle USER par défaut
+      return await prisma.user.create({
+        data: {
+          ...user,
+          role: 'USER',
+        }
+      })
+    },
+  },
   providers: [
     DiscordProvider({
       clientId: process.env.DISCORD_CLIENT_ID!,
@@ -30,45 +41,9 @@ export const authOptions: NextAuthOptions = {
       }
       return session
     },
-    async signIn({ user, account }) {
+    async signIn({ account }) {
       // Vérifier que l'utilisateur se connecte via Discord
-      if (account?.provider !== 'discord') {
-        return false
-      }
-
-      try {
-        // Créer ou mettre à jour l'utilisateur
-        const existingUser = await prisma.user.findUnique({
-          where: { email: user.email! }
-        })
-
-        if (!existingUser) {
-          // Nouvel utilisateur - rôle USER par défaut
-          await prisma.user.create({
-            data: {
-              email: user.email!,
-              name: user.name,
-              image: user.image,
-              role: 'USER',
-              emailVerified: new Date(),
-            }
-          })
-        } else {
-          // Mettre à jour les informations Discord
-          await prisma.user.update({
-            where: { email: user.email! },
-            data: {
-              name: user.name,
-              image: user.image,
-            }
-          })
-        }
-
-        return true
-      } catch (error) {
-        console.error('Erreur lors de la création/mise à jour utilisateur:', error)
-        return false
-      }
+      return account?.provider === 'discord'
     },
   },
   pages: {
