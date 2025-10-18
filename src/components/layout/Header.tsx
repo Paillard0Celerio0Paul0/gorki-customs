@@ -34,7 +34,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between">
+      <div className="container mx-auto px-4 flex h-16 items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2">
           <motion.div
@@ -49,12 +49,12 @@ export function Header() {
         </Link>
 
         {/* Navigation Desktop */}
-        <nav className="hidden md:flex items-center space-x-6">
+        <nav className="hidden md:flex items-center space-x-8">
           {navigation.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className="flex items-center space-x-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+              className="flex items-center space-x-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
             >
               <item.icon className="h-4 w-4" />
               <span>{item.name}</span>
@@ -63,12 +63,12 @@ export function Header() {
           
           {session?.user?.role === 'ADMIN' && (
             <>
-              <div className="h-4 w-px bg-border" />
+              <div className="h-4 w-px bg-border mx-2" />
               {adminNavigation.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="flex items-center space-x-2 text-sm font-medium text-accent hover:text-accent/80 transition-colors"
+                  className="flex items-center space-x-2 text-sm font-medium text-accent hover:text-accent/80 transition-colors px-2 py-1 rounded-md hover:bg-accent/10"
                 >
                   <item.icon className="h-4 w-4" />
                   <span>{item.name}</span>
@@ -147,12 +147,12 @@ export function Header() {
           exit={{ opacity: 0, height: 0 }}
           className="md:hidden border-t border-border bg-background"
         >
-          <div className="container py-4 space-y-4">
+          <div className="container mx-auto px-4 py-4 space-y-3">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="flex items-center space-x-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+                className="flex items-center space-x-3 text-sm font-medium text-muted-foreground hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <item.icon className="h-4 w-4" />
@@ -162,12 +162,12 @@ export function Header() {
             
             {session?.user?.role === 'ADMIN' && (
               <>
-                <div className="h-px bg-border" />
+                <div className="h-px bg-border my-2" />
                 {adminNavigation.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="flex items-center space-x-2 text-sm font-medium text-accent hover:text-accent/80 transition-colors"
+                    className="flex items-center space-x-3 text-sm font-medium text-accent hover:text-accent/80 transition-colors px-3 py-2 rounded-md hover:bg-accent/10"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <item.icon className="h-4 w-4" />

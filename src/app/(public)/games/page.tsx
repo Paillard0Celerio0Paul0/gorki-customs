@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Gamepad2, Search, Calendar, Users, Trophy, Clock } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { ChampionIcon } from '@/components/ui/champion-icon'
 
 interface Game {
   id: string
@@ -224,7 +225,14 @@ export default function GamesPage() {
                                 {player.role}
                               </Badge>
                             </div>
-                            <span className="text-muted-foreground">{player.champion}</span>
+                            <div className="flex items-center space-x-2">
+                              <ChampionIcon 
+                                championName={player.champion} 
+                                size="sm" 
+                                showTooltip={true}
+                              />
+                              <span className="text-muted-foreground">{player.champion}</span>
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -245,7 +253,14 @@ export default function GamesPage() {
                                 {player.role}
                               </Badge>
                             </div>
-                            <span className="text-muted-foreground">{player.champion}</span>
+                            <div className="flex items-center space-x-2">
+                              <ChampionIcon 
+                                championName={player.champion} 
+                                size="sm" 
+                                showTooltip={true}
+                              />
+                              <span className="text-muted-foreground">{player.champion}</span>
+                            </div>
                           </div>
                         ))}
                       </div>

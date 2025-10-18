@@ -28,6 +28,7 @@ import {
   Trophy
 } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { ChampionIcon } from '@/components/ui/champion-icon'
 
 interface Game {
   id: string

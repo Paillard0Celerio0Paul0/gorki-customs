@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge'
 import { Upload, Video, CheckCircle, AlertCircle, Gamepad2 } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { ChampionIcon } from '@/components/ui/champion-icon'
 
 interface Game {
   id: string

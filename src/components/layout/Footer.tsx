@@ -3,21 +3,22 @@
 import Link from 'next/link'
 import { Gamepad2, Github, Twitter, Mail } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { BuyMeCoffeeSimple } from '@/components/ui/buy-me-coffee-simple'
 
 export function Footer() {
   return (
     <footer className="border-t border-border bg-background">
-      <div className="container py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Logo et description */}
-          <div className="space-y-4">
+          <div className="space-y-4 md:col-span-2 lg:col-span-1">
             <Link href="/" className="flex items-center space-x-2">
               <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
                 <Gamepad2 className="h-5 w-5 text-primary-foreground" />
               </div>
               <span className="text-xl font-bold neon-text">Gorki Custom</span>
             </Link>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground max-w-sm">
               Plateforme de gestion des custom games League of Legends avec upload de clips vidéo.
             </p>
           </div>
@@ -64,18 +65,34 @@ export function Footer() {
           {/* Contact */}
           <div className="space-y-4">
             <h3 className="text-sm font-semibold">Contact</h3>
-            <div className="flex space-x-4">
-            League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc.
+            <div className="flex flex-col space-y-3">
+              <BuyMeCoffeeSimple slug="rhaaamen" />
+              <div className="flex space-x-4">
+                {/* <Link href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                  <Github className="h-5 w-5" />
+                </Link>
+                <Link href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                  <Twitter className="h-5 w-5" />
+                </Link>
+                <Link href="mailto:contact@gorki-custom.com" className="text-muted-foreground hover:text-primary transition-colors">
+                  <Mail className="h-5 w-5" />
+                </Link> */}
+              </div>
             </div>
           </div>
         </div>
 
         <div className="mt-8 pt-8 border-t border-border">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm text-muted-foreground">
-              © 2024 Gorki Custom. Tous droits réservés.
-            </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div className="text-center md:text-left">
+              <p className="text-sm text-muted-foreground">
+                © 2024 Gorki Custom. Tous droits réservés.
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">
+                League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc
+              </p>
+            </div>
+            <div className="flex items-center space-x-6">
               <Link href="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                 Confidentialité
               </Link>

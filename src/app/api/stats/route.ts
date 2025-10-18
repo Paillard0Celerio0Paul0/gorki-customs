@@ -3,10 +3,45 @@ import { prisma } from '@/lib/prisma'
 
 export async function GET() {
   try {
+    // Statistiques générales
+    const totalGames = await prisma.game.count()
+    const totalClips = await prisma.clip.count()
+    const totalPlayers = await prisma.player.count()
+
+    // Top 3 champions les plus joués
+    const topChampions = await prisma.player.groupBy({
+      by: ['champion'],
+      _count: {
+        champion: true
+      },
+      orderBy: {
+        _count: {
+          champion: 'desc'
+        }
+      },
+      take: 3
+    })
+
+    const mostPlayedChampions = topChampions.map((champ, index) => ({
+      rank: index + 1,
+      name: champ.champion,
+      picks: champ._count.champion
+    }))
+
     // Statistiques des joueurs
     const playerStats = await prisma.player.findMany({
       include: {
-        statistics: true
+        statistics: {
+          include: {
+            game: {
+              include: {
+                blueTeam: true,
+                redTeam: true
+              }
+            }
+          }
+        },
+        team: true
       }
     })
 
@@ -15,7 +50,13 @@ export async function GET() {
       const totalDeaths = player.statistics.reduce((sum, stat) => sum + stat.deaths, 0)
       const totalAssists = player.statistics.reduce((sum, stat) => sum + stat.assists, 0)
       const games = player.statistics.length
-      const wins = player.statistics.filter(stat => stat.win).length
+      
+      // Calculer les victoires en vérifiant si l'équipe du joueur a gagné
+      const wins = player.statistics.filter(stat => {
+        const game = stat.game
+        const playerTeamSide = player.team.side
+        return game.winner === playerTeamSide
+      }).length
       
       return {
         pseudo: player.pseudo,
@@ -28,22 +69,19 @@ export async function GET() {
       }
     })
 
-    // Statistiques des champions
-    const championStats = await prisma.statistic.groupBy({
+    // Statistiques des champions (basées sur les joueurs)
+    const championStats = await prisma.player.groupBy({
       by: ['champion'],
       _count: {
         champion: true
-      },
-      _sum: {
-        win: true
       }
     })
 
     const championStatsFormatted = championStats.map(champ => ({
       name: champ.champion,
       picks: champ._count.champion,
-      wins: champ._sum.win || 0,
-      winrate: champ._count.champion > 0 ? ((champ._sum.win || 0) / champ._count.champion) * 100 : 0
+      wins: 0, // Pour l'instant, on ne peut pas calculer les victoires par champion facilement
+      winrate: 0 // Pour l'instant, on ne peut pas calculer le winrate par champion facilement
     }))
 
     // Statistiques mensuelles (simulées pour l'instant)
@@ -57,6 +95,10 @@ export async function GET() {
     ]
 
     return NextResponse.json({
+      totalGames,
+      totalClips,
+      totalPlayers,
+      mostPlayedChampions,
       playerStats: playerStatsFormatted,
       championStats: championStatsFormatted,
       monthlyStats

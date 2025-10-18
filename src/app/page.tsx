@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -8,7 +9,53 @@ import { DiscordInfo } from '@/components/ui/discord-info'
 import { Gamepad2, Upload, BarChart3, Users, Trophy, Zap } from 'lucide-react'
 import { motion } from 'framer-motion'
 
+interface HomeStats {
+  totalGames: number
+  totalClips: number
+  totalPlayers: number
+  totalWins: number
+}
+
 export default function Home() {
+  const [stats, setStats] = useState<HomeStats>({
+    totalGames: 0,
+    totalClips: 0,
+    totalPlayers: 0,
+    totalWins: 0
+  })
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Charger les statistiques depuis l'API
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        setIsLoading(true)
+        const response = await fetch('/api/stats')
+        if (response.ok) {
+          const data = await response.json()
+          
+          // Calculer le nombre total de victoires
+          const totalWins = data.playerStats?.reduce((sum: number, player: any) => sum + player.wins, 0) || 0
+          
+          setStats({
+            totalGames: data.totalGames || 0,
+            totalClips: data.totalClips || 0,
+            totalPlayers: data.totalPlayers || 0,
+            totalWins: totalWins
+          })
+        } else {
+          console.error('Erreur lors du chargement des statistiques')
+        }
+      } catch (error) {
+        console.error('Erreur lors du chargement des statistiques:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchStats()
+  }, [])
+
   const features = [
     {
       icon: Gamepad2,
@@ -32,11 +79,11 @@ export default function Home() {
     },
   ]
 
-  const stats = [
-    { label: 'Games Jouées', value: '1,234', icon: Gamepad2 },
-    { label: 'Clips Uploadés', value: '567', icon: Upload },
-    { label: 'Joueurs Actifs', value: '89', icon: Users },
-    { label: 'Victoires', value: '456', icon: Trophy },
+  const statsData = [
+    { label: 'Games Jouées', value: stats.totalGames.toLocaleString(), icon: Gamepad2 },
+    { label: 'Clips Uploadés', value: stats.totalClips.toLocaleString(), icon: Upload },
+    { label: 'Joueurs Actifs', value: stats.totalPlayers.toLocaleString(), icon: Users },
+    { label: 'Victoires', value: stats.totalWins.toLocaleString(), icon: Trophy },
   ]
 
   return (
@@ -50,10 +97,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <Badge variant="secondary" className="mb-4 animate-pulse-neon">
-              <Zap className="h-3 w-3 mr-1" />
-              Nouvelle Plateforme
-            </Badge>
+            
             <h1 className="text-4xl md:text-6xl font-bold mb-6 neon-text">
               Gorki Custom
             </h1>
@@ -83,7 +127,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="grid grid-cols-2 md:grid-cols-4 gap-8"
           >
-            {stats.map((stat, index) => (
+            {statsData.map((stat, index) => (
               <motion.div
                 key={stat.label}
                 initial={{ opacity: 0, y: 20 }}
@@ -95,7 +139,13 @@ export default function Home() {
                 <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 mb-4">
                   <stat.icon className="h-6 w-6 text-primary" />
                 </div>
-                <div className="text-2xl font-bold neon-text">{stat.value}</div>
+                <div className="text-2xl font-bold neon-text">
+                  {isLoading ? (
+                    <div className="animate-pulse bg-muted rounded h-8 w-16 mx-auto"></div>
+                  ) : (
+                    stat.value
+                  )}
+                </div>
                 <div className="text-sm text-muted-foreground">{stat.label}</div>
               </motion.div>
             ))}

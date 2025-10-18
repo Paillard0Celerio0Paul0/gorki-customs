@@ -24,6 +24,7 @@ import {
   Zap
 } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { ChampionIcon } from '@/components/ui/champion-icon'
 
 interface PlayerStats {
   pseudo: string
@@ -48,10 +49,19 @@ interface MonthlyStats {
   clips: number
 }
 
+interface MostPlayedChampion {
+  rank: number
+  name: string
+  picks: number
+}
+
 export default function StatsPage() {
   const [playerStats, setPlayerStats] = useState<PlayerStats[]>([])
   const [championStats, setChampionStats] = useState<ChampionStats[]>([])
   const [monthlyStats, setMonthlyStats] = useState<MonthlyStats[]>([])
+  const [totalGames, setTotalGames] = useState(0)
+  const [totalClips, setTotalClips] = useState(0)
+  const [mostPlayedChampions, setMostPlayedChampions] = useState<MostPlayedChampion[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   // Charger les statistiques depuis l'API
@@ -65,17 +75,26 @@ export default function StatsPage() {
           setPlayerStats(data.playerStats || [])
           setChampionStats(data.championStats || [])
           setMonthlyStats(data.monthlyStats || [])
+          setTotalGames(data.totalGames || 0)
+          setTotalClips(data.totalClips || 0)
+          setMostPlayedChampions(data.mostPlayedChampions || [])
         } else {
           console.error('Erreur lors du chargement des statistiques')
           setPlayerStats([])
           setChampionStats([])
           setMonthlyStats([])
+          setTotalGames(0)
+          setTotalClips(0)
+          setMostPlayedChampions([])
         }
       } catch (error) {
         console.error('Erreur lors du chargement des statistiques:', error)
         setPlayerStats([])
         setChampionStats([])
         setMonthlyStats([])
+        setTotalGames(0)
+        setTotalClips(0)
+        setMostPlayedChampions([])
       } finally {
         setIsLoading(false)
       }
@@ -117,7 +136,7 @@ export default function StatsPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
       >
         <Card className="hover:neon-glow transition-all duration-300">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -125,23 +144,41 @@ export default function StatsPage() {
             <Gamepad2 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold neon-text">69</div>
+            <div className="text-2xl font-bold neon-text">{totalGames}</div>
             <p className="text-xs text-muted-foreground">
-              +12% depuis le mois dernier
+              Games enregistrées
             </p>
           </CardContent>
         </Card>
 
         <Card className="hover:neon-glow transition-all duration-300">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Joueurs Actifs</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Most Played Champions</CardTitle>
+            <Crown className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold neon-text">89</div>
-            <p className="text-xs text-muted-foreground">
-              +8 nouveaux joueurs
-            </p>
+            <div className="space-y-3">
+              {mostPlayedChampions.length > 0 ? (
+                mostPlayedChampions.map((champion) => (
+                  <div key={champion.rank} className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <span className="text-sm font-medium text-muted-foreground">
+                        #{champion.rank}
+                      </span>
+                      <ChampionIcon 
+                        championName={champion.name} 
+                        size="sm" 
+                        showTooltip={true}
+                      />
+                      <span className="text-sm font-medium">{champion.name}</span>
+                    </div>
+                    <span className="text-sm font-bold neon-text">{champion.picks}</span>
+                  </div>
+                ))
+              ) : (
+                <p className="text-sm text-muted-foreground">Aucune donnée</p>
+              )}
+            </div>
           </CardContent>
         </Card>
 
@@ -151,22 +188,9 @@ export default function StatsPage() {
             <Zap className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold neon-text">253</div>
+            <div className="text-2xl font-bold neon-text">{totalClips}</div>
             <p className="text-xs text-muted-foreground">
-              +23 cette semaine
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="hover:neon-glow transition-all duration-300">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Winrate Moyen</CardTitle>
-            <Trophy className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold neon-text">67%</div>
-            <p className="text-xs text-muted-foreground">
-              +5% vs mois dernier
+              Clips partagés
             </p>
           </CardContent>
         </Card>
