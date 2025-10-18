@@ -124,7 +124,6 @@ export default function AdminDashboard() {
           <CardContent>
             <div className="text-2xl font-bold neon-text">{stats.totalGames}</div>
             <p className="text-xs text-muted-foreground">
-              +2 depuis la semaine dernière
             </p>
           </CardContent>
         </Card>
@@ -137,7 +136,6 @@ export default function AdminDashboard() {
           <CardContent>
             <div className="text-2xl font-bold neon-text">{stats.totalClips}</div>
             <p className="text-xs text-muted-foreground">
-              +12 cette semaine
             </p>
           </CardContent>
         </Card>
@@ -150,7 +148,6 @@ export default function AdminDashboard() {
           <CardContent>
             <div className="text-2xl font-bold neon-text">{stats.totalUsers}</div>
             <p className="text-xs text-muted-foreground">
-              +5 nouveaux utilisateurs
             </p>
           </CardContent>
         </Card>
@@ -161,10 +158,7 @@ export default function AdminDashboard() {
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold neon-text">+24%</div>
-            <p className="text-xs text-muted-foreground">
-              vs mois dernier
-            </p>
+          
           </CardContent>
         </Card>
       </motion.div>

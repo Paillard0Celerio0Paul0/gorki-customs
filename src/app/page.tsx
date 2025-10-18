@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -17,6 +18,7 @@ interface HomeStats {
 }
 
 export default function Home() {
+  const { data: session, status } = useSession()
   const [stats, setStats] = useState<HomeStats>({
     totalGames: 0,
     totalClips: 0,
@@ -24,6 +26,9 @@ export default function Home() {
     totalWins: 0
   })
   const [isLoading, setIsLoading] = useState(true)
+
+  // Vérifier si l'utilisateur est connecté via Discord
+  const isConnectedViaDiscord = session?.user?.provider === 'discord'
 
   // Charger les statistiques depuis l'API
   useEffect(() => {
@@ -201,21 +206,23 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Discord Info Section */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto max-w-2xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <DiscordInfo />
-          </motion.div>
-        </div>
-      </section>
+      {/* Discord Info Section - Affichée seulement si pas connecté via Discord */}
+      {!isConnectedViaDiscord && (
+        <section className="py-16 px-4">
+          <div className="container mx-auto max-w-2xl">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <DiscordInfo />
+            </motion.div>
+          </div>
+        </section>
+      )}
 
-      {/* CTA Section */}
+      {/* CTA Section - Contenu différent selon l'état de connexion */}
       <section className="py-20 px-4">
         <div className="container mx-auto text-center">
           <motion.div
@@ -224,21 +231,47 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Prêt à Commencer ?
-            </h2>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Rejoignez la communauté et commencez à suivre vos custom games 
-              dès aujourd'hui.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="neon-glow">
-                <Link href="/auth/signin">Se Connecter avec Discord</Link>
-              </Button>
-              <Button asChild variant="outline" size="lg">
-                <Link href="/games">Explorer</Link>
-              </Button>
-            </div>
+            {isConnectedViaDiscord ? (
+              // Contenu pour utilisateur connecté
+              <>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  Bienvenue, {session?.user?.name} !
+                </h2>
+                <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+                  Vous êtes connecté et prêt à explorer toutes les fonctionnalités de Gorki Custom.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button asChild size="lg" className="neon-glow">
+                    <Link href="/games">Voir les Games</Link>
+                  </Button>
+                  <Button asChild variant="outline" size="lg">
+                    <Link href="/upload">Uploader un Clip</Link>
+                  </Button>
+                  <Button asChild variant="outline" size="lg">
+                    <Link href="/stats">Voir les Stats</Link>
+                  </Button>
+                </div>
+              </>
+            ) : (
+              // Contenu pour utilisateur non connecté
+              <>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  Prêt à Commencer ?
+                </h2>
+                <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+                  Rejoignez la communauté et commencez à suivre vos custom games 
+                  dès aujourd'hui.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button asChild size="lg" className="neon-glow">
+                    <Link href="/auth/signin">Se Connecter avec Discord</Link>
+                  </Button>
+                  <Button asChild variant="outline" size="lg">
+                    <Link href="/games">Explorer</Link>
+                  </Button>
+                </div>
+              </>
+            )}
           </motion.div>
         </div>
       </section>
