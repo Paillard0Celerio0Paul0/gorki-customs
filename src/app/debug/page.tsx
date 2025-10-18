@@ -1,9 +1,25 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
+import { useState } from 'react'
 
 export default function DebugPage() {
   const { data: session, status } = useSession()
+  const [dbTest, setDbTest] = useState<any>(null)
+  const [loading, setLoading] = useState(false)
+
+  const testDatabase = async () => {
+    setLoading(true)
+    try {
+      const response = await fetch('/api/auth/test-db')
+      const data = await response.json()
+      setDbTest(data)
+    } catch (error) {
+      setDbTest({ success: false, error: 'Erreur de connexion' })
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="container mx-auto py-8 px-4">
@@ -25,6 +41,27 @@ export default function DebugPage() {
           <p className="text-sm text-gray-600 mt-2">
             Note: NEXTAUTH_URL n'est pas exposée côté client par défaut pour des raisons de sécurité
           </p>
+        </div>
+
+        <div className="p-4 border rounded">
+          <h2 className="font-semibold">Test de Base de Données</h2>
+          <button
+            onClick={testDatabase}
+            disabled={loading}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50"
+          >
+            {loading ? 'Test en cours...' : 'Tester la Base de Données'}
+          </button>
+          {dbTest && (
+            <div className="mt-4 p-3 rounded" style={{ 
+              backgroundColor: dbTest.success ? '#d1fae5' : '#fee2e2',
+              border: `1px solid ${dbTest.success ? '#10b981' : '#ef4444'}`
+            }}>
+              <pre className="text-sm">
+                {JSON.stringify(dbTest, null, 2)}
+              </pre>
+            </div>
+          )}
         </div>
 
         <div className="p-4 border rounded">
