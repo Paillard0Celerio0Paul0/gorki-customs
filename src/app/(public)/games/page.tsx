@@ -45,70 +45,7 @@ export default function GamesPage() {
 
   // Données de démonstration
   useEffect(() => {
-    const demoGames: Game[] = [
-      {
-        id: '1',
-        name: 'Finale Tournoi Hiver 2024',
-        date: '2024-01-15T20:00:00Z',
-        blueTeam: {
-          name: 'Team Blue',
-          players: [
-            { pseudo: 'Gorki', champion: 'Jinx', role: 'ADC' },
-            { pseudo: 'Player2', champion: 'Thresh', role: 'SUPPORT' },
-            { pseudo: 'Player3', champion: 'Orianna', role: 'MID' },
-            { pseudo: 'Player4', champion: 'Lee Sin', role: 'JUNGLE' },
-            { pseudo: 'Player5', champion: 'Malphite', role: 'TOP' },
-          ]
-        },
-        redTeam: {
-          name: 'Team Red',
-          players: [
-            { pseudo: 'Enemy1', champion: 'Caitlyn', role: 'ADC' },
-            { pseudo: 'Enemy2', champion: 'Blitzcrank', role: 'SUPPORT' },
-            { pseudo: 'Enemy3', champion: 'Zed', role: 'MID' },
-            { pseudo: 'Enemy4', champion: 'Graves', role: 'JUNGLE' },
-            { pseudo: 'Enemy5', champion: 'Darius', role: 'TOP' },
-          ]
-        },
-        blueScore: 25,
-        redScore: 18,
-        winner: 'BLUE',
-        duration: 42
-      },
-      {
-        id: '2',
-        name: 'Match Amical - Janvier',
-        date: '2024-01-10T19:30:00Z',
-        blueTeam: {
-          name: 'Les Invincibles',
-          players: [
-            { pseudo: 'ProPlayer1', champion: 'Vayne', role: 'ADC' },
-            { pseudo: 'ProPlayer2', champion: 'Nami', role: 'SUPPORT' },
-            { pseudo: 'ProPlayer3', champion: 'Syndra', role: 'MID' },
-            { pseudo: 'ProPlayer4', champion: 'Kha\'Zix', role: 'JUNGLE' },
-            { pseudo: 'ProPlayer5', champion: 'Garen', role: 'TOP' },
-          ]
-        },
-        redTeam: {
-          name: 'Les Challengers',
-          players: [
-            { pseudo: 'Challenger1', champion: 'Ezreal', role: 'ADC' },
-            { pseudo: 'Challenger2', champion: 'Leona', role: 'SUPPORT' },
-            { pseudo: 'Challenger3', champion: 'Ahri', role: 'MID' },
-            { pseudo: 'Challenger4', champion: 'Elise', role: 'JUNGLE' },
-            { pseudo: 'Challenger5', champion: 'Renekton', role: 'TOP' },
-          ]
-        },
-        blueScore: 12,
-        redScore: 28,
-        winner: 'RED',
-        duration: 35
-      }
-    ]
 
-    setGames(demoGames)
-    setFilteredGames(demoGames)
-    setIsLoading(false)
   }, [])
 
   useEffect(() => {

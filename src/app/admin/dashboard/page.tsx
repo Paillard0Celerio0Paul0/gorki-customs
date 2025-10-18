@@ -46,43 +46,7 @@ export default function AdminDashboard() {
   })
   const [isLoading, setIsLoading] = useState(true)
 
-  // Données de démonstration
-  useEffect(() => {
-    const demoStats: DashboardStats = {
-      totalGames: 24,
-      totalClips: 156,
-      totalUsers: 89,
-      recentGames: [
-        {
-          id: '1',
-          name: 'Finale Tournoi Hiver 2024',
-          date: '2024-01-15T20:00:00Z',
-          winner: 'BLUE',
-          blueScore: 25,
-          redScore: 18
-        },
-        {
-          id: '2',
-          name: 'Match Amical - Janvier',
-          date: '2024-01-10T19:30:00Z',
-          winner: 'RED',
-          blueScore: 12,
-          redScore: 28
-        },
-        {
-          id: '3',
-          name: 'Semi-Finale Tournoi',
-          date: '2024-01-08T21:00:00Z',
-          winner: 'BLUE',
-          blueScore: 22,
-          redScore: 15
-        }
-      ]
-    }
-
-    setStats(demoStats)
-    setIsLoading(false)
-  }, [])
+ 
 
   // Vérifier les permissions admin
   useEffect(() => {
