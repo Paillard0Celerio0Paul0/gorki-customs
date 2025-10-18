@@ -65,27 +65,7 @@ export function Footer() {
           <div className="space-y-4">
             <h3 className="text-sm font-semibold">Contact</h3>
             <div className="flex space-x-4">
-              <motion.a
-                href="#"
-                whileHover={{ scale: 1.1 }}
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Github className="h-5 w-5" />
-              </motion.a>
-              <motion.a
-                href="#"
-                whileHover={{ scale: 1.1 }}
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Twitter className="h-5 w-5" />
-              </motion.a>
-              <motion.a
-                href="#"
-                whileHover={{ scale: 1.1 }}
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Mail className="h-5 w-5" />
-              </motion.a>
+            League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc.
             </div>
           </div>
         </div>
