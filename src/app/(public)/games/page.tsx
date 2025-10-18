@@ -43,7 +43,30 @@ export default function GamesPage() {
   const [filterBy, setFilterBy] = useState('all')
   const [isLoading, setIsLoading] = useState(true)
 
- 
+  // Charger les games depuis l'API
+  useEffect(() => {
+    const fetchGames = async () => {
+      try {
+        setIsLoading(true)
+        const response = await fetch('/api/games')
+        if (response.ok) {
+          const data = await response.json()
+          setGames(data)
+        } else {
+          console.error('Erreur lors du chargement des games')
+          setGames([])
+        }
+      } catch (error) {
+        console.error('Erreur lors du chargement des games:', error)
+        setGames([])
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchGames()
+  }, [])
+
   useEffect(() => {
     let filtered = games
 

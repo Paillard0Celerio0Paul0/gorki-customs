@@ -33,6 +33,26 @@ export default function UploadPage() {
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'success' | 'error'>('idle')
   const [error, setError] = useState('')
 
+  // Charger les games depuis l'API
+  useEffect(() => {
+    const fetchGames = async () => {
+      try {
+        const response = await fetch('/api/games')
+        if (response.ok) {
+          const data = await response.json()
+          setGames(data)
+        } else {
+          console.error('Erreur lors du chargement des games')
+          setGames([])
+        }
+      } catch (error) {
+        console.error('Erreur lors du chargement des games:', error)
+        setGames([])
+      }
+    }
+
+    fetchGames()
+  }, [])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]

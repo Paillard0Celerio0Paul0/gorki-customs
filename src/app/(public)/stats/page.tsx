@@ -2,10 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { 
-  BarChart, 
-  Bar, 
   XAxis, 
   YAxis, 
   CartesianGrid, 
@@ -57,6 +54,35 @@ export default function StatsPage() {
   const [monthlyStats, setMonthlyStats] = useState<MonthlyStats[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
+  // Charger les statistiques depuis l'API
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        setIsLoading(true)
+        const response = await fetch('/api/stats')
+        if (response.ok) {
+          const data = await response.json()
+          setPlayerStats(data.playerStats || [])
+          setChampionStats(data.championStats || [])
+          setMonthlyStats(data.monthlyStats || [])
+        } else {
+          console.error('Erreur lors du chargement des statistiques')
+          setPlayerStats([])
+          setChampionStats([])
+          setMonthlyStats([])
+        }
+      } catch (error) {
+        console.error('Erreur lors du chargement des statistiques:', error)
+        setPlayerStats([])
+        setChampionStats([])
+        setMonthlyStats([])
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchStats()
+  }, [])
 
   const COLORS = ['#00d4ff', '#7c3aed', '#ef4444', '#10b981', '#f59e0b']
 
