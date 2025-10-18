@@ -44,7 +44,7 @@ export default function AdminDashboard() {
     totalUsers: 0,
     recentGames: []
   })
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
  
 
