@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("GORKI_CUSTOMS_DATABASE_URL")
+  url      = env("GORKI_CUSTOMS_PRISMA_DATABASE_URL")
 }
 
 model Account {
