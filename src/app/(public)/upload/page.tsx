@@ -111,7 +111,7 @@ export default function UploadPage() {
         throw new Error('Erreur lors de l\'upload')
       }
 
-      const result = await response.json()
+      await response.json()
       
       setUploadStatus('success')
       

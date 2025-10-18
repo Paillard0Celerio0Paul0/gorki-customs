@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma"
 import DiscordProvider from "next-auth/providers/discord"
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma) as any,
+  adapter: PrismaAdapter(prisma),
   providers: [
     DiscordProvider({
       clientId: process.env.DISCORD_CLIENT_ID!,
@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
       }
       return session
     },
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account }) {
       // Vérifier que l'utilisateur se connecte via Discord
       if (account?.provider !== 'discord') {
         return false

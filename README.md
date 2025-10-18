@@ -126,7 +126,7 @@ git add .
 git commit -m "Initial commit"
 git push origin main
 
-# Vercel déploiera automatiquement
+# Vercel déploiera automatiquement via GitHub integration
 ```
 
 ### 5. Migration de la base de données en production

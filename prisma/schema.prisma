@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("GORKI_CUSTOMS_DATABASE_URL")
 }
 
 model Account {
@@ -64,8 +64,10 @@ model Game {
   id          String   @id @default(cuid())
   name        String
   date        DateTime
-  blueTeam    Team     @relation("BlueTeam")
-  redTeam     Team     @relation("RedTeam")
+  blueTeamId  String   @unique
+  redTeamId   String   @unique
+  blueTeam    Team     @relation("BlueTeam", fields: [blueTeamId], references: [id], onDelete: Cascade)
+  redTeam     Team     @relation("RedTeam", fields: [redTeamId], references: [id], onDelete: Cascade)
   blueScore   Int      @default(0)
   redScore    Int      @default(0)
   winner      TeamSide
@@ -82,9 +84,11 @@ model Team {
   id        String   @id @default(cuid())
   name      String
   side      TeamSide
-  gameId    String
-  game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
   players   Player[]
+  
+  // Relations avec Game
+  blueGames  Game[] @relation("BlueTeam")
+  redGames   Game[] @relation("RedTeam")
 }
 
 model Player {
