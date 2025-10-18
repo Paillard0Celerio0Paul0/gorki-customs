@@ -36,37 +36,43 @@ export const authOptions: NextAuthOptions = {
         return false
       }
 
-      // Créer ou mettre à jour l'utilisateur
-      const existingUser = await prisma.user.findUnique({
-        where: { email: user.email! }
-      })
+      try {
+        // Créer ou mettre à jour l'utilisateur
+        const existingUser = await prisma.user.findUnique({
+          where: { email: user.email! }
+        })
 
-      if (!existingUser) {
-        // Nouvel utilisateur - rôle USER par défaut
-        await prisma.user.create({
-          data: {
-            email: user.email!,
-            name: user.name,
-            image: user.image,
-            role: 'USER',
-            emailVerified: new Date(),
-          }
-        })
-      } else {
-        // Mettre à jour les informations Discord
-        await prisma.user.update({
-          where: { email: user.email! },
-          data: {
-            name: user.name,
-            image: user.image,
-          }
-        })
+        if (!existingUser) {
+          // Nouvel utilisateur - rôle USER par défaut
+          await prisma.user.create({
+            data: {
+              email: user.email!,
+              name: user.name,
+              image: user.image,
+              role: 'USER',
+              emailVerified: new Date(),
+            }
+          })
+        } else {
+          // Mettre à jour les informations Discord
+          await prisma.user.update({
+            where: { email: user.email! },
+            data: {
+              name: user.name,
+              image: user.image,
+            }
+          })
+        }
+
+        return true
+      } catch (error) {
+        console.error('Erreur lors de la création/mise à jour utilisateur:', error)
+        return false
       }
-
-      return true
     },
   },
   pages: {
     signIn: "/auth/signin",
   },
+  debug: process.env.NODE_ENV === 'development',
 }
