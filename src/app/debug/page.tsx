@@ -20,31 +20,37 @@ export default function DebugPage() {
 
         <div className="p-4 border rounded">
           <h2 className="font-semibold">Variables d'Environnement (côté client)</h2>
-          <p>NEXTAUTH_URL: {process.env.NEXT_PUBLIC_NEXTAUTH_URL || 'Non définie'}</p>
+          <p>NEXTAUTH_URL: {process.env.NEXT_PUBLIC_NEXTAUTH_URL || 'Non définie (normal)'}</p>
           <p>NODE_ENV: {process.env.NODE_ENV}</p>
+          <p className="text-sm text-gray-600 mt-2">
+            Note: NEXTAUTH_URL n'est pas exposée côté client par défaut pour des raisons de sécurité
+          </p>
         </div>
 
         <div className="p-4 border rounded">
-          <h2 className="font-semibold">URLs de Test</h2>
+          <h2 className="font-semibold">Test de Connexion Discord</h2>
           <div className="space-y-2">
             <a 
               href="/api/auth/signin/discord" 
-              className="block text-blue-500 hover:underline"
+              className="block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-center"
             >
-              Connexion Discord Directe
+              🔗 Connexion Discord Directe
             </a>
             <a 
-              href="/api/auth/csrf" 
-              className="block text-blue-500 hover:underline"
+              href="/auth/signin" 
+              className="block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-center"
             >
-              Token CSRF
+              🔗 Page de Connexion Normale
             </a>
-            <a 
-              href="/api/auth/providers" 
-              className="block text-blue-500 hover:underline"
-            >
-              Providers Disponibles
-            </a>
+            <div className="text-sm text-gray-600 mt-4">
+              <p><strong>Si l'erreur persiste :</strong></p>
+              <ul className="list-disc list-inside mt-2 space-y-1">
+                <li>Vérifiez l'URL de redirection dans Discord Developer Portal</li>
+                <li>L'URL doit être exactement : <code>https://gorki-customs.vercel.app/api/auth/callback/discord</code></li>
+                <li>Pas d'espaces avant/après l'URL</li>
+                <li>Application Discord activée</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
