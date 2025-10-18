@@ -4,18 +4,7 @@ import { prisma } from "@/lib/prisma"
 import DiscordProvider from "next-auth/providers/discord"
 
 export const authOptions: NextAuthOptions = {
-  adapter: {
-    ...PrismaAdapter(prisma),
-    async createUser(user) {
-      // Créer l'utilisateur avec le rôle USER par défaut
-      return await prisma.user.create({
-        data: {
-          ...user,
-          role: 'USER',
-        }
-      })
-    },
-  },
+  adapter: PrismaAdapter(prisma),
   providers: [
     DiscordProvider({
       clientId: process.env.DISCORD_CLIENT_ID!,
@@ -44,6 +33,12 @@ export const authOptions: NextAuthOptions = {
     async signIn({ account }) {
       // Vérifier que l'utilisateur se connecte via Discord
       return account?.provider === 'discord'
+    },
+    async redirect({ url, baseUrl }) {
+      // Rediriger vers /games après connexion
+      if (url.startsWith("/")) return `${baseUrl}${url}`
+      else if (new URL(url).origin === baseUrl) return url
+      return `${baseUrl}/games`
     },
   },
   pages: {
