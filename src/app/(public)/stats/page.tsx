@@ -57,36 +57,6 @@ export default function StatsPage() {
   const [monthlyStats, setMonthlyStats] = useState<MonthlyStats[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
-  // Données de démonstration
-  useEffect(() => {
-    const demoPlayerStats: PlayerStats[] = [
-      { pseudo: 'Gorki', games: 15, wins: 12, kills: 156, deaths: 45, assists: 89, kda: 5.44 },
-      { pseudo: 'ProPlayer1', games: 12, wins: 8, kills: 134, deaths: 52, assists: 67, kda: 3.87 },
-      { pseudo: 'Challenger1', games: 10, wins: 7, kills: 98, deaths: 38, assists: 45, kda: 3.76 },
-      { pseudo: 'Alpha1', games: 8, wins: 6, kills: 87, deaths: 29, assists: 34, kda: 4.17 },
-      { pseudo: 'Beta1', games: 7, wins: 4, kills: 76, deaths: 41, assists: 28, kda: 2.54 },
-    ]
-
-    const demoChampionStats: ChampionStats[] = [
-      { name: 'Jinx', picks: 8, wins: 6, winrate: 75 },
-      { name: 'Thresh', picks: 6, wins: 4, winrate: 67 },
-      { name: 'Orianna', picks: 5, wins: 3, winrate: 60 },
-      { name: 'Lee Sin', picks: 4, wins: 2, winrate: 50 },
-      { name: 'Malphite', picks: 3, wins: 2, winrate: 67 },
-    ]
-
-    const demoMonthlyStats: MonthlyStats[] = [
-      { month: 'Oct', games: 12, clips: 45 },
-      { month: 'Nov', games: 18, clips: 67 },
-      { month: 'Déc', games: 15, clips: 52 },
-      { month: 'Jan', games: 24, clips: 89 },
-    ]
-
-    setPlayerStats(demoPlayerStats)
-    setChampionStats(demoChampionStats)
-    setMonthlyStats(demoMonthlyStats)
-    setIsLoading(false)
-  }, [])
 
   const COLORS = ['#00d4ff', '#7c3aed', '#ef4444', '#10b981', '#f59e0b']
 

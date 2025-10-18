@@ -43,11 +43,7 @@ export default function GamesPage() {
   const [filterBy, setFilterBy] = useState('all')
   const [isLoading, setIsLoading] = useState(true)
 
-  // Données de démonstration
-  useEffect(() => {
-
-  }, [])
-
+ 
   useEffect(() => {
     let filtered = games
 

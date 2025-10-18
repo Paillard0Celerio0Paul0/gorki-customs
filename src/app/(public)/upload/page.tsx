@@ -33,15 +33,6 @@ export default function UploadPage() {
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'success' | 'error'>('idle')
   const [error, setError] = useState('')
 
-  // Données de démonstration
-  useEffect(() => {
-    const demoGames: Game[] = [
-      { id: '1', name: 'Finale Tournoi Hiver 2024', date: '2024-01-15T20:00:00Z' },
-      { id: '2', name: 'Match Amical - Janvier', date: '2024-01-10T19:30:00Z' },
-    ]
-    setGames(demoGames)
-  }, [])
-
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
